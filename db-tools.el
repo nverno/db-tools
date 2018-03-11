@@ -30,11 +30,14 @@
 ;;; Code:
 (eval-when-compile
   (require 'cl-lib)
+  (require 'nvp-macro)
+  (defvar sql-product)
+  (defvar sql-buffer)
+  (defvar sql-mode-abbrev-table)
   (defvar zeal-at-point-docset))
 
-(defvar db-tools--dir nil)
-(when load-file-name
-  (setq db-tools--dir (file-name-directory load-file-name)))
+(nvp-package-dir db-tools--dir)
+(nvp-package-load-snippets db-tools--dir)
 
 ;; ------------------------------------------------------------
 
