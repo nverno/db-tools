@@ -39,6 +39,10 @@
 (nvp-package-dir db-tools--dir)
 (nvp-package-load-snippets db-tools--dir)
 
+(declare-function sql-set-product "sql")
+(declare-function sql-set-sqli-buffer "sql")
+(declare-function sql-product-font-lock "sql")
+
 ;; ------------------------------------------------------------
 
 ;;; SQLi
@@ -113,19 +117,6 @@
   (db-tools-sqli-suppress-indent)
   (db-tools-psql-set-zeal))
 
-(eval-after-load 'yasnippet
-  '(let ((dir (expand-file-name "snippets" db-tools--dir))
-         (dirs (or (and (consp yas-snippet-dirs) yas-snippet-dirs)
-                   (cons yas-snippet-dirs ()))))
-     (unless (member dir dirs)
-       (setq yas-snippet-dirs (delq nil (cons dir dirs))))
-     (yas-load-directory dir)))
-
 ;; ------------------------------------------------------------
-
-(declare-function sql-set-product "sql")
-(declare-function sql-set-sqli-buffer "sql")
-(declare-function sql-product-font-lock "sql")
-
 (provide 'db-tools)
 ;;; db-tools.el ends here
