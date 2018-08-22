@@ -108,7 +108,7 @@
 (defun db-tools-setup-local ()
   (setq-local indent-line-function 'sql-indent-line)
   (make-local-variable 'pre-abbrev-expand-hook)
-  (add-hook 'pre-abbrev-expand-hook
+  (add-hook 'abbrev-expand-function
             'db-tools-sql-pre-abbrev-expand-hook nil 'local)
   (db-tools-psql-set-zeal))
 
