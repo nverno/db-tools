@@ -33,7 +33,6 @@
   (require 'nvp-macro)
   (defvar sql-product)
   (defvar sql-buffer)
-  (defvar sql-mode-abbrev-table)
   (defvar zeal-at-point-docset))
 
 (nvp-package-dir db-tools--dir)
@@ -44,7 +43,6 @@
 (declare-function sql-product-font-lock "sql")
 
 ;; ------------------------------------------------------------
-
 ;;; SQLi
 
 ;; font-lock everything in sql interactive mode
@@ -56,6 +54,12 @@
 (defun db-tools-sqli-suppress-indent ()
   (set (make-local-variable 'indent-line-function)
        (lambda () 'noindent)))
+
+;; setup repl
+(defun db-tools-sqli-setup ()
+  (db-tools-sqli-font-lock)
+  (db-tools-sqli-suppress-indent)
+  (db-tools-psql-set-zeal))
 
 (defvar db-tools--sql-buffer)
 
@@ -95,28 +99,5 @@
     (and (null (elt ppss 3))    ; inside string
          (null (elt ppss 4))))) ; inside comment
 
-;; FIXME: pre-abbrev-expand-hook -> abbrev-expand-function
-;; Only expand abbrevs in code context.
-(defun db-tools-sql-pre-abbrev-expand-hook ()
-  (setq local-abbrev-table
-        (if (sql-in-code-context-p)
-            sql-mode-abbrev-table)))
-
-;; ------------------------------------------------------------
-;;; Setup local
-
-(defun db-tools-setup-local ()
-  (setq-local indent-line-function 'sql-indent-line)
-  (make-local-variable 'pre-abbrev-expand-hook)
-  (add-hook 'abbrev-expand-function
-            'db-tools-sql-pre-abbrev-expand-hook nil 'local)
-  (db-tools-psql-set-zeal))
-
-(defun db-tools-sqli-setup-local ()
-  (db-tools-sqli-font-lock)
-  (db-tools-sqli-suppress-indent)
-  (db-tools-psql-set-zeal))
-
-;; ------------------------------------------------------------
 (provide 'db-tools)
 ;;; db-tools.el ends here
